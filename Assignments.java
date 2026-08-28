@@ -1,9 +1,12 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.Deque;
 
 public class Assignments {
+
     static void reverseFirstK(Queue<Integer> queue, int k) {
         Stack<Integer> st = new Stack<>();
 
@@ -63,11 +66,46 @@ public class Assignments {
         return cost;
     }
 
+    static void maxOfSubarrays(int[] arr, int k) {
+        Deque<Integer> dq = new LinkedList<>();
+
+        for (int i = 0; i < k; i++) {
+
+            while (!dq.isEmpty() && arr[dq.peekLast()] <= arr[i]) {
+                dq.removeLast();
+            }
+
+            dq.addLast(i);
+        }
+
+        for (int i = k; i < arr.length; i++) {
+
+            while (!dq.isEmpty() && dq.peekFirst() <= i - k) {
+                dq.removeFirst();
+            }
+
+            // Smaller elements remove karo
+            while (!dq.isEmpty() && arr[dq.peekLast()] <= arr[i]) {
+                dq.removeLast();
+            }
+
+            dq.addLast(i);
+
+            // Front = maximum element
+            System.out.print(arr[dq.peekFirst()] + " ");
+        }
+    }
+
     public static void main(String[] args) {
 
-        int[] arr = { 4, 3, 2, 6 };
+        int arr[] = { 1, 2, 3, 1, 4, 5, 2, 3, 6 };
+        int k = 3;
 
-        System.out.println(minCost(arr)); // Calculates Minimum cost
+        maxOfSubarrays(arr, k);
+
+        // int[] arr = { 4, 3, 2, 6 };
+
+        // System.out.println(minCost(arr)); // Calculates Minimum cost
 
         // int N = 5;
         // generateBinary(N);
